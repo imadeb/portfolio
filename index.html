@@ -113,7 +113,12 @@
 								<div class="container">
 									<h3>CONTACTEZ-MOI</h3>
 									<p>Une idee ? un projet ? contactez moi !.</p>
-									<form method="post" action="#">
+<?php
+$action=$_REQUEST['action'];
+if ($action=="")    /* display the contact form */
+    {
+    ?>
+									<form  action="" method="POST" enctype="multipart/form-data">
 										<div class="row gtr-uniform">
 											<div class="col-6 col-12-xsmall"><input type="text" name="name" id="name" placeholder="Nom" /></div>
 											<div class="col-6 col-12-xsmall"><input type="email" name="email" id="email" placeholder="Email" /></div>
@@ -127,6 +132,26 @@
 											</div>
 										</div>
 									</form>
+<?php
+    } 
+else                /* send the submitted data */
+    {
+    $name=$_REQUEST['name'];
+    $email=$_REQUEST['email'];
+    $subject=$_REQUEST['subject'];
+    $message=$_REQUEST['message'];
+    if (($name=="")||($email=="")||($message==""))
+        {
+        echo "All fields are required, please fill again.";
+        }
+    else{        
+        $from="From: $name<$email>\r\nReturn-path: $email";
+        $subject="Message sent using your contact form: $subject";
+        mail("imad.debbour@gmail.com", $subject, $message, $from);
+        echo "Email sent!";
+        }
+    }  
+?>
 								</div>
 							</section>
 
